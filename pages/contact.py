@@ -2,7 +2,7 @@ import dash
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
-dash.register_page(__name__, title='Contact', name='Contact', order=10)
+dash.register_page(__name__, title='Contact', name='Contact', order=4)
 
 green_text = {'color':'blue'}
 
