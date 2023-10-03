@@ -457,8 +457,7 @@ def plot_history_matrixxy(sav,dt,bheight,bwidth):
 
   x = sav['Q1'][0, :]
   y = sav['Q2'][0, :]
-
-  # Create a heatmap trace for the frame
+ 
   trace = go.Histogram2d(
       x=x,
       y=y,
@@ -865,7 +864,7 @@ def layout():
         ]),  
     ############################
         html.Div([
-            html.Label('Total Time Iterations__ : '),   
+            html.Label('Total Iterations Time__ : '),   
             dcc.Input(
                 id='input-neld-N',
                 type='number',
