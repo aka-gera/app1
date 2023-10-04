@@ -920,7 +920,7 @@ html.Br(),
                 'background-color' : 'black',
                 'font-size': 20,
                 'margin': 'auto',
-                'width': '100%', 
+                'width': '60%', 
                 }
     ),
 
