@@ -480,7 +480,7 @@ def plot_history_matrixxy(sav,dt,bheight,bwidth):
                   ) 
 
   fig.update_layout(
-      title=f'Time {0:.2f}'
+      title=f'Time {dt:.2f}'
   )
 
 
@@ -920,7 +920,7 @@ html.Br(),
                 'background-color' : 'black',
                 'font-size': 20,
                 'margin': 'auto',
-                'width': '70%', 
+                'width': '100%', 
                 }
     ),
 
