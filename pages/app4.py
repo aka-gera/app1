@@ -912,13 +912,15 @@ html.Br(),
  
                 
     html.Div([
-        html.Div(id='output-neld-fig', style={'display': 'inline-block'}),
+        # html.Div(id='output-neld-fig', style={'display': 'inline-block'}),
         html.Div(id='output-neld-fig2', style={'display': 'inline-block'}),
     ],
     style={'textAlign': 'center',
                 'color': 'white',
                 'background-color' : 'black',
-                'font-size': 20
+                'font-size': 20,
+                'margin': 'auto',
+                'width': '70%', 
                 }
     ),
 
@@ -954,7 +956,7 @@ html.Br(),
 @callback([
         # Output('my-slider', 'min'),
         # Output('my-slider', 'max'),
-        Output('output-neld-fig', 'children'),
+        # Output('output-neld-fig', 'children'),
         Output('output-neld-fig2', 'children'),
     ],
     [
@@ -987,16 +989,16 @@ def update_output(flow,nPart,epsilon,rcut,N,Nperiod):
         pbc, param, lis, X, sav = Parameter(flow, epsilon, nPart, rcut, N, Nperiod)  # get the parameters
 
         sav = Simulation(X, pbc, param, lis, sav, animation)
-        datF = paramFig(pbc['flow'],param['a'])
+        # datF = paramFig(pbc['flow'],param['a'])
 
         bheight = 600
         bwidth = 600
 
         fig2 = dcc.Graph( figure = plot_history_matrixxy(sav,pbc['dt'],bheight,bwidth)) 
-        fig = dcc.Graph(figure= plot_history_matrixxy2(sav,datF,param,pbc,bheight,bwidth))
+        # fig = dcc.Graph(figure= plot_history_matrixxy2(sav,datF,param,pbc,bheight,bwidth))
 
 
-        return  [fig,fig2]
+        return  [fig2]
 
 
 

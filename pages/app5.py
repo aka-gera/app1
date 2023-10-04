@@ -271,8 +271,44 @@ def layout():
     
     html.Hr(style={'border-color': 'white'}),
     html.Br(),
-
+     html.Div([ 
+    html.Div(['This application is designed to approximate the solution of the ',
+             dcc.Link('Bolza example', href='https://www.ams.org/journals/bull/1942-48-02/S0002-9904-1942-07600-2/S0002-9904-1942-07600-2.pdf', target='_blank'),
+             ' using a polynomial with a desired degree. ' 
+             ]
+            ),
+            html.Div('Explicitly, find the function u(x) that minimizes the integral :'),
+            dcc.Markdown('''
+            $$ I(u)=\int_0^1 f(u(x),u'(x))\ ,dx : u \in W_0^{1,4}(0,1), 
+                         ''', mathjax=True),  
+                         
+            dcc.Markdown('''
+                         
+             $$ f(u,u')  = ((u')^2-1)^2 + u^4.
+            ''', mathjax=True),  
+            html.Div([
+                    'The integration is approximated using the ',
+                    dcc.Link('Trapezoidal rule', href='https://en.wikipedia.org/wiki/Trapezoidal_rule', target='_blank'),
+                    ', the derivative is approximated using a ',
+                    dcc.Link('fourth finite difference method', href='http://www.holoborodko.com/pavel', target='_blank'),
+                    ', and the minimization problem is solved using the ',
+                    dcc.Link('nonlinear conjugate gradient method', href='https://en.wikipedia.org/wiki/Nonlinear_conjugate_gradient_method', target='_blank')
+                    ]
+                        ),
+     ],
+            style={'textAlign': 'center',
+                   'color': 'grey',
+                   'background-color' : 'black',
+                   'font-size': 25,
+                    'margin':'auto',
+                    'width': '60%', 
+                   }
+     ),
  
+    html.Br(),
+    
+    html.Hr(style={'border-color': 'white'}),
+    html.Br(),
     html.Br(),
           # Create an outer division
      html.Div([ 
@@ -401,6 +437,7 @@ def layout():
 
 
 ])
+
 
 
 

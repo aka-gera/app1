@@ -11,6 +11,7 @@ image_1 = 'assets/fig_neld_inv/pef_Density.png'
 image_2 = 'assets/fig_neld_inv/shear_Density.png'
 image_data = 'assets/dataAnalyst.png'
 image_nav = 'assets/nav.png'
+image_apps = 'assets/apps.png'
 
 
 page_1 = 'app4'
@@ -88,6 +89,28 @@ def layout():
                                     ),
                                     ],
                                 href='app3'),
+                                ],
+                                  style={
+                                    'width' : 3,
+                                    'text-align-last' : 'center' ,
+                                    'margin': 'auto',   
+                                    'color': 'grey'}
+                            ),#####################################
+                            dbc.Col([            
+                                html.A([
+
+                                    html.Br(), 
+                                    html.Img(src=image_apps, 
+                                                alt='Image Alt Text', 
+                                                style={'width': '200px', 'height': '200px'}),
+                                    html.H3(['Bolza Example Approximation'],
+                                    style={ 
+                                        'text-align-last' : 'center' ,
+                                        'margin': 'auto',   
+                                        'color': 'grey'}
+                                    ),
+                                    ],
+                                href='app5'),
                                 ],
                                   style={
                                     'width' : 3,
