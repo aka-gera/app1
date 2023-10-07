@@ -171,7 +171,7 @@ def layout():
         ),
     ]),
     html.Div([
-        html.Label('Nodes Number_______________: '),   
+        html.Label('Node Count_________________: '),   
         dcc.Input(
             id='input-num-nodes',
             type='text', 
