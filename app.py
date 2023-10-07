@@ -23,9 +23,7 @@ header = dbc.Navbar(
 )
 
 app.layout = dbc.Container([header, dash.page_container], fluid=False)
-
-# if __name__ == '__main__':
-# 	app.run_server()
+ 
 # Run the app
 if __name__ == '__main__': 
     app.run_server(   debug=False)#, dev_tools_ui=False, dev_tools_props_check=False)

@@ -24,345 +24,30 @@ import dash
 from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, Output, callback
-from dash.dependencies import Input, Output  
-import plotly.express as px
+from dash.dependencies import Input, Output   
 from dash import no_update 
  
-from sklearn.model_selection import train_test_split
-# Allows us to test parameters of classification algorithms and find the best one
-from sklearn.model_selection import GridSearchCV
-# Logistic Regression classification algorithm
-from sklearn.linear_model import LogisticRegression
-# Support Vector Machine classification algorithm
-from sklearn.linear_model import LinearRegression
+# from sklearn.model_selection import train_test_split  
   
 
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-import plotly.figure_factory as ff
+# from sklearn.metrics import classification_report
+# from sklearn.metrics import confusion_matrix 
+
+from my_dash_class.my_files import dash_deco,plot_dash  
+from my_dash_class.my_data import getData, DashToDataFrame,download
+from my_dash_class.my_learning_alg import SuperLearning
+
+
+barName = 'Supervised Learning Classification'
+
+dash.register_page(__name__, title=barName, name=barName,order=9)
  
-from sklearn.tree import DecisionTreeClassifier
+
+# call class
+dash_deco = dash_deco()
+DashToDataFrame = DashToDataFrame()
+download = download() 
  
-import base64
-import io 
-
-dash.register_page(__name__,title='Dataset Analysis', name='Dataset Analysis', order=9)
-
-
-tcouleur = 'plotly_dark'
-bcouleur = 'navy'
-fcouleur = 'white'
-fsize = 20
-
-
-def plot_history_dash(dfm,feat):
-    fig_cm = px.histogram(data_frame= dfm,x=feat,opacity= 0.7)
-
-    fig_cm.update_layout(
-       barmode='overlay',
-        # paper_bgcolor=bcouleur,  # Set the background color here
-        font=dict(color=fcouleur,size=fsize),  # Set the font color to here
-        title_x=0.5,
-        title_y=0.9,
-        template=tcouleur
-    )
-    return fig_cm
-
-def plot_history_all_dash(dfm ):
-    fig  = px.histogram(data_frame= dfm,opacity= .7).update_xaxes(categoryorder='total descending')
-    fig .update_layout(
-       barmode='overlay',
-        # paper_bgcolor=bcouleur,  # Set the background color here
-        font=dict(color=fcouleur,size=fsize),  # Set the font color to here
-        title_x=0.5,
-        title_y=0.9,
-        template=tcouleur
-    )
-    fig.update_xaxes(
-            title_font = {"size": 14},
-            title_standoff = 25)
-    return fig
-
-def plot_confusion_matrix_dash(y,y_predict,cmLabel,lab):
-    cm = confusion_matrix(y, y_predict)
-    if lab == 1:
-        fig = ff.create_annotated_heatmap(cm,
-                                          x=cmLabel[:cm.shape[1]],
-                                          y=cmLabel[:cm.shape[1]],
-                                          colorscale='Viridis',showscale=True)
-        fig.update_xaxes(
-                title_text='Predicted labels',
-                title_font = {"size": 18},
-                title_standoff = 25,
-                side='bottom')
-        fig.update_yaxes(
-                title_text = 'True labels',
-                title_font = {"size": 18},
-                title_standoff = 25)
-    else:
-        annotation_text = [['' for _ in range(cm.shape[1])] for _ in range(cm.shape[0])]
-        fig = ff.create_annotated_heatmap(cm,
-                                          x=cmLabel[:cm.shape[1]],
-                                          y=cmLabel[:cm.shape[1]],
-                                          colorscale='Viridis',
-                                          annotation_text=annotation_text,
-                                          showscale=True)
-        fig.update_xaxes(
-                title_text='Prediction',
-                title_font = {"size": 18},
-                title_standoff = 25,
-                side='bottom')
-        # fig.update_xaxes(  showticklabels=False )
-        fig.update_yaxes(
-                title_text = 'True Solution',
-                title_font = {"size": 18},
-                title_standoff = 25,
-                showticklabels=False  # Hide the x-axis
-                )
-    fig.update_layout(
-        title='Confusion Matrix',
-        font=dict(color=fcouleur,size=fsize),  # Set the font color to here
-        template=tcouleur
-    )
-    fig.update_layout(
-        # paper_bgcolor=bcouleur,  # Set the background color here
-        font=dict(color=fcouleur,size=fsize),  # Set the font color to here
-        title_x=0.5,
-        title_y=0.9,
-        template=tcouleur
-    )
-    return fig
-
-def plot_classification_report_dash(y, y_predict,cmLabel,lab):
-
-    report_str = classification_report(y, y_predict,  zero_division=0)
-    report_lines = report_str.split('\n')
-
-    # Remove empty lines
-    report_lines = [line for line in report_lines if line.strip()]
-    data = [line.split() for line in report_lines[1:]]
-    colss = ['feature', 'precision',   'recall',  'f1-score',   'support', 'n1one']
-
-    # Convert to a DataFrame
-    report_df = pd.DataFrame(data, columns = colss )
-    report_df = report_df[report_df.columns[:-1]]
-    cm = report_df.iloc[:-3,1:].apply(pd.to_numeric).values
-    colss1 = [  'precision',   'recall',  'f1-score',   'support']
-    if lab == 1:
-        fig_cm = ff.create_annotated_heatmap(cm,
-                                             x = colss1,
-                                             y = cmLabel[:cm.shape[0]],
-                                             colorscale='Viridis' )
-        fig_cm.update_yaxes(
-                 title_text = 'y',
-                title_font = {"size": 18},
-                title_standoff = 25,
-                showticklabels=False  # Hide the x-axis
-                )
-    else:
-        cmm =  cm[:,:-1]
-        annotation_text = [['' for _ in range(cmm.shape[1])] for _ in range(cmm.shape[0])]
-        fig_cm = ff.create_annotated_heatmap(cmm,
-                                             x = colss1[:-1],
-                                             colorscale='Viridis',
-                                             showscale=True,
-                                             annotation_text=annotation_text )
-        fig_cm.update_yaxes(
-                 title_text = 'y',
-                title_font = {"size": 18},
-                # title_standoff = 25,
-                showticklabels=False  # Hide the x-axis
-                )
-    fig_cm.update_layout(
-          title='Classification Report',
-          # paper_bgcolor=bcouleur,  # Set the background color here
-          font=dict(color=fcouleur,size=fsize),  # Set the font color to here
-          title_x=0.5,
-          title_y=0.9,
-          template=tcouleur
-      )
-    return fig_cm
-
-from sklearn.tree import DecisionTreeClassifier
-def ML_DecisionTreeClassifier(X_train, X_test, y_train, y_test,X_pred) :
-    clf = DecisionTreeClassifier()
-    clf.fit(X_train, y_train)
-    return clf.predict(X_test),clf.predict(X_pred),clf.score(X_test, y_test)
-
-from sklearn.linear_model import LogisticRegression
-def ML_LogisticRegression(X_train, X_test, y_train, y_test,X_pred) :
-    clf = LogisticRegression(solver='lbfgs', max_iter=1000)
-    clf.fit(X_train, y_train)
-    return clf.predict(X_test),clf.predict(X_pred),clf.score(X_test, y_test)
-
-from sklearn.svm import SVC
-def ML_SVC(X_train, X_test, y_train, y_test,X_pred) :
-    clf = SVC()
-    clf.fit(X_train, y_train)
-    return clf.predict(X_test),clf.predict(X_pred),clf.score(X_test, y_test)
-
-from sklearn.neighbors import KNeighborsClassifier
-def ML_KNeighborsClassifier(X_train, X_test, y_train, y_test,X_pred) :
-    clf = KNeighborsClassifier()
-    clf.fit(X_train, y_train)
-    return clf.predict(X_test),clf.predict(X_pred),clf.score(X_test, y_test)
-
-from sklearn.naive_bayes import GaussianNB
-def ML_KNeighborsClassifier(X_train, X_test, y_train, y_test,X_pred) :
-    clf = GaussianNB()
-    clf.fit(X_train, y_train)
-    return clf.predict(X_test),clf.predict(X_pred),clf.score(X_test, y_test)
-
-from sklearn.linear_model import SGDClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import make_pipeline
-def ML_SGDClassifier(X_train, X_test, y_train, y_test,X_pred) :
-    clf = make_pipeline(StandardScaler(), SGDClassifier(max_iter=2500, tol=1e-3, penalty = 'elasticnet'))
-    clf.fit(X_train, y_train)
-    return clf.predict(X_test),clf.predict(X_pred),clf.score(X_test, y_test)
-
-def ChooseML(ml, X_train, X_test, y_train, y_test,X_pred, cmLabel,shw):
-
-    if ml == 'LG' :
-        y_pred_LG,y_pred,scre = ML_LogisticRegression(X_train, X_test, y_train, y_test,X_pred)
-        fig2 = plot_confusion_matrix_dash(y_test,y_pred_LG,cmLabel,shw)
-        fig3 = plot_classification_report_dash(y_test,y_pred_LG,cmLabel,shw)
-    elif ml == 'DT':
-        y_pred_DT,y_pred,scre = ML_DecisionTreeClassifier(X_train, X_test, y_train, y_test,X_pred)
-        fig2 = plot_confusion_matrix_dash(y_test,y_pred_DT,cmLabel,shw)
-        fig3 = plot_classification_report_dash(y_test,y_pred_DT,cmLabel,shw)
-    elif ml == 'KNN':
-        y_pred_KNN,y_pred,scre = ML_KNeighborsClassifier(X_train, X_test, y_train, y_test,X_pred)
-        fig2 = plot_confusion_matrix_dash(y_test,y_pred_KNN,cmLabel,shw)
-        fig3 = plot_classification_report_dash(y_test,y_pred_KNN,cmLabel,shw)
-    elif ml == 'SVC':
-        y_pred_SVC,y_pred,scre = ML_SVC(X_train, X_test, y_train, y_test,X_pred)
-        fig2 = plot_confusion_matrix_dash(y_test,y_pred_SVC,cmLabel,shw)
-        fig3 = plot_classification_report_dash(y_test,y_pred_SVC,cmLabel,shw)
-    elif ml == 'NB':
-        y_pred_NB,y_pred,scre = ML_KNeighborsClassifier(X_train, X_test, y_train, y_test,X_pred)
-        fig2 = plot_confusion_matrix_dash(y_test,y_pred_NB,cmLabel,shw)
-        fig3 = plot_classification_report_dash(y_test,y_pred_NB,cmLabel,shw)
-    elif ml == 'SGD':
-        y_pred_SGD,y_pred,scre = ML_SGDClassifier(X_train, X_test, y_train, y_test,X_pred)
-        fig2 = plot_confusion_matrix_dash(y_test,y_pred_SGD,cmLabel,shw)
-        fig3 = plot_classification_report_dash(y_test,y_pred_SGD,cmLabel,shw)
-
-
-
-    return fig2,fig3,y_pred,scre
-
-def CleaningVar(dfT):
-
-    cmLabel = [ '`'+str(elm) for elm in dfT[dfT.columns[-1]].dropna().unique()]
-    nrows,ncols = dfT.shape
-
-    typOfVar = []
-    for j in range(ncols):
-        for i,elm in dfT[dfT.columns[j]].dropna().items():
-            if isinstance(elm,str):
-                typOfVar.append(j)
-                break
-
-    mapping = {}
-    swapMapping = {}
-
-    if typOfVar is not None:
-        for j in typOfVar:
-            mapping[dfT.columns[j]] = {}
-            uniq = dfT[dfT.columns[j]].dropna().unique()
-            for i in range(len(uniq)):
-                key = uniq[i]
-                mapping[dfT.columns[j]][key] = i
-
-        if ncols in typOfVar:
-            swapMapping = {v: k for k, v in mapping[dfT.columns[-1]].items()}
-
-    return  cmLabel,typOfVar,mapping,swapMapping
-
-def CleaningDF(df,typOfVar,mapping):
-
-    dfTemp = df
-    nrows,ncols = df.shape
-
-    if typOfVar is not None:
-        for j in typOfVar:
-            dfTemp[dfTemp.columns[j]] = df[df.columns[j]].map(mapping[df.columns[j]])
-
-
-    for j in range(ncols):
-        mode1 = dfTemp[dfTemp.columns[j]].mode()
-        dfTemp[df.columns[j]] = dfTemp[df.columns[j]].fillna(mode1[0])
-
-
-    return  dfTemp
-
-def Algorithm(df,dfpred):
-
-    cmLabel,typOfVar,mapping,swapMapping = CleaningVar(df)
-
-    # dfpred,dff,cmLabel,typOfVar,mapping,ncols = Cleaning(dfpred )
-    df1 = CleaningDF(df,typOfVar,mapping)
-    df1.columns = ['Feature'+str(i) for i in range(df.shape[1])] #['`'+elm for elm in df.columns]
-
-    dfpred1 = CleaningDF(dfpred,typOfVar,mapping)
-    dfpred1.columns =['Feature'+str(i) for i in range(dfpred.shape[1])]
-
-    X = df1[df1.columns[:-1]].values
-    Y = df1[df1.columns[-1]].values
-
-    X_pred = dfpred1[df1.columns[:-1]].values
-
-    X_train, X_test, y_train, y_test = train_test_split( X, Y, test_size=0.3, random_state=4)
-
-    return  df1,X_train, X_test, y_train, y_test,X_pred, cmLabel,typOfVar,swapMapping
-
-def parse_contents(contents, filename):
-    content_type, content_string = contents.split(',')
-
-    decoded = base64.b64decode(content_string)
-    try:
-        if 'data' or 'csv' in filename:
-            df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
-        elif 'xls' in filename:
-            df = pd.read_excel(io.BytesIO(decoded))
-    except Exception as e:
-        print(e)
-        return html.Div(['There was an error processing this file.'
-        ]), None  # Return None for the DataFrame if there was an error
-
-    # Display the first 5 rows
-    first_5_rows = df.head(5)
-
-    return html.Div([
-
-        dash_table.DataTable(
-            first_5_rows.to_dict('records'), [{'name': i, 'id': i} for i in first_5_rows.columns]
-        ),
-
-        html.Hr(),  # horizontal line
-
-        html.Div('Raw Content'),
-        html.Pre(contents[0:200] + '...',
-                 style={
-            'whiteSpace': 'pre-wrap',
-            'wordBreak': 'break-all'
-        })
-    ]), df  # Return the DataFrame along with other components
-
-def dfDownload(data):
-
-    df = pd.DataFrame(data)
-    csv_content = df.to_csv(index=False)
-
-
-    file_dict = {
-        "content": csv_content,
-        "filename": "prediction.csv",
-        "type": "text/csv",  # Corrected property name
-    }
-
-    return file_dict
 
 shw = 0
 
@@ -383,27 +68,16 @@ box_style={
             'margin': 'auto',  # Center-align the dropdown horizontally
             'background-color' : 'black',
             'color': 'black'
-            }
-# Create a dash application Cyborg
-
-# app =  dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
-# JupyterDash.infer_jupyter_proxy_config()
-
-# server = app.server
-# app.config.suppress_callback_exceptions = True
+            } 
 
 def layout():
     return html.Div(
-    style={
-        'color' : 'black',
-        'backgroundColor': 'black',  # Set the background color of the app here
-        'height': '100vh'  # Set the height of the app to fill the viewport
-    },
+    style=dash_deco.app_style,
     children=[
     html.Br(),
     html.Br(),
     html.Br(),
-    html.H1('Dataset Analysis',
+    html.H1('Dataset Analysis Via Supervised Learning Algorithms',
             style={'textAlign': 'center',
                    'color': 'white',
                    'background-color' : 'black',
@@ -438,9 +112,7 @@ def layout():
             'background-color' : 'grey',
             } ,
         multiple=True
-    ),
-    # html.Div(id='output-data-upload'),
-    # dcc.Graph(id='column-plot')  # Graph component to display the plot
+    ), 
 ]),
 
     html.Br(),
@@ -469,9 +141,7 @@ def layout():
             'background-color' : 'grey',
             } ,
         multiple=True
-    ),
-    # html.Div(id='output-data-upload'),
-    # dcc.Graph(id='column-plot')  # Graph component to display the plot
+    ), 
 ]),
 
     html.Br(),
@@ -540,11 +210,7 @@ def layout():
     dcc.Download(id="download-button"),
     html.Button("Download Prediction",
                 id="btn-download",
-                style={
-                    'display': 'flex',
-                    'justify-content': 'center',
-                    'background-color': 'grey'
-                    }
+                style=dash_deco.default_style_buttom
                 ),
         ],
     style={
@@ -554,23 +220,10 @@ def layout():
           ),
     html.Br(),
     html.Br(),
-    html.Div([
-        html.A(
-            html.Img(src='https://img.icons8.com/color/48/000000/github.png'),
-            href='https://github.com/aka-gera',
-            target='_blank'
-        ),
-        html.A(
-            html.Img(src='https://img.icons8.com/color/48/000000/linkedin.png'),
-            href='https://www.linkedin.com/in/aka-gera/',
-            target='_blank'
-        ),
-        html.A(
-            html.Img(src='https://img.icons8.com/color/48/000000/youtube.png'),
-            href='https://www.youtube.com/@aka-Gera',
-            target='_blank'
-        ),
-    ], style={'display': 'flex', 'justify-content': 'center'})
+    html.Br(),
+    html.Br(),
+    html.Div([dash_deco.signature]),
+    html.Br(),
 
 
 ])
@@ -606,50 +259,44 @@ def layout():
 
 
 def update_output(list_of_contents, list_of_names,list_of_contents2, list_of_names2,feature,ml,n_clicks):
-    if [list_of_contents,list_of_contents2] is not None:
-        # Parse the contents and get the DataFrame
-        children_and_df = [parse_contents(c, n) for c, n in zip(list_of_contents, list_of_names)]
+    if [list_of_contents,list_of_contents2] is not None: 
+        
+        df = DashToDataFrame.dash_to_df(list_of_contents, list_of_names)
+        dfpred = DashToDataFrame.dash_to_df(list_of_contents2, list_of_names2)
+ 
 
-        # children = [item[0] for item in children_and_df]  # Extract the HTML components
-        df = [item[1] for item in children_and_df if item[1] is not None][0]  # Extract the DataFrame
-        # df.columns = ['`p'+elm for elm in df.columns]
-
-
-        children_and_df2 = [ parse_contents(c, n) for c, n in zip(list_of_contents2, list_of_names2)]
-
-        dfpred = [item[1] for item in children_and_df2 if item[1] is not None][0]  # Extract the DataFrame
-        # dfpred.columns = ['`p'+elm for elm in dfpred.columns]
-
-        dff,X_train, X_test, y_train, y_test,X_pred, cmLabel,typOfVar,mapping = Algorithm(df,dfpred)
+        getDat = getData(df,dfpred) 
+        dff,X_train, X_test, y_train, y_test,X_pred, cmLabel,typOfVar,mapping = getDat.Algorithm() 
         filtered_df = dff[dff.columns[0:-1]]
 
 
+
+        plot_d = plot_dash(filtered_df)
+
         if feature == 'ALL':
-            figure1 =  dcc.Graph( figure = plot_history_all_dash(filtered_df ) )
+            figure1 =  dcc.Graph( figure = plot_d.plot_history_all_dash() )
         else:
-            figure1 =  dcc.Graph( figure = plot_history_dash(filtered_df,feature) )
+            figure1 =  dcc.Graph( figure = plot_d.plot_history_dash(feature) )
 
-        fig2,fig3,y_pred,scre = ChooseML(ml, X_train, X_test, y_train, y_test,X_pred, cmLabel,shw)
 
-        if df.shape[1] in typOfVar:
-            y_pred = pd.DataFrame(y_pred).replace(mapping).values
+        ML = SuperLearning(X_train, X_test, y_train, y_test,X_pred) 
 
-        fig2 = dcc.Graph( figure = fig2)
-        fig3 = dcc.Graph( figure = fig3)
+        y_pred,y_predpred,scre = ML.ChooseML(ml) 
+        fig2 = dcc.Graph( figure = plot_d.plot_confusion_matrix_dash(y_test,y_pred,cmLabel,shw))
+        fig3 = dcc.Graph( figure = plot_d.plot_classification_report_dash(y_test,y_pred,cmLabel,shw))
+  
 
         txt_output = html.Div( ['The overall accuracy of the selected algorithm is ',f'{scre*100 :.2f}','%'],
-            style={'textAlign': 'center', 'color': 'white', 'background-color' : 'black',   'font-size': 20}
+            style=dash_deco.default_style
                 )
 
+        if df.shape[1] in typOfVar:
+            y_predpred = pd.DataFrame(y_predpred).replace(mapping).values
+
         if n_clicks is None:
-            butpred = dash.no_update  # Don't trigger download if the button hasn't been clicked
+            butpred = dash.no_update   
         else:
-            butpred =dfDownload(y_pred)
+            butpred =download.dfDownload(y_predpred)
 
         return  [  figure1,fig2,fig3,txt_output,butpred]
-
-
-
-# # Run the app
-# if __name__ == '__main__':
-#     app.run_server(  debug=False)
+ 
