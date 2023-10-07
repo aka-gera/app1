@@ -162,7 +162,7 @@ def layout():
     html.Hr(style={'border-color': 'white'}),
     html.Br(),
     html.Div([
-        html.Label('epoq__________________________: '),   
+        html.Label('epoq___________________________: '),   
         dcc.Input(
             id='input-epoq',
             type='number',  
@@ -171,7 +171,7 @@ def layout():
         ),
     ]),
     html.Div([
-        html.Label('Node Count_________________: '),   
+        html.Label('Node Count___________________: '),   
         dcc.Input(
             id='input-num-nodes',
             type='text', 
