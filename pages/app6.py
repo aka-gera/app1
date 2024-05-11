@@ -29,7 +29,7 @@ from my_dash_class.my_data import getData, DashToDataFrame,download
 from my_dash_class.my_learning_alg import NN
 
  
-barName = 'Neuro Net Classification'
+barName = 'Deep Learning Classification'
 
 dash.register_page(__name__, title=barName, name=barName,order=6)
  
