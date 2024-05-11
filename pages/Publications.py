@@ -104,17 +104,17 @@ def layout():
         dbc.Col([
             dcc.Markdown('Motivation'),
             html.Hr(),
-            dcc.Markdown('According to statistics from the CDC, breast cancer is,'
-                         'the most common cancer diagnosis among women in the'
-                         'United States. Currently, radiology is an expert-based field'
-                         'where automated tools are at best relegated to the role of'
-                         '“second reader.” Early detection is an enormously important'
-                         'part of breast cancer treatment, so our goal in this project'
-                         'is to create a machine learning pipeline for detection and'
-                         'diagnosis from mammogram images. We also model the'
-                         'growth and treatment of tumors using a system of ODEs.'
-                         'Due to a lack of human data, this last part of the pipeline'
-                         'uses data from experiments on lab mice, and is not restricted'
+            dcc.Markdown('According to statistics from the CDC, breast cancer is, '
+                         'the most common cancer diagnosis among women in the '
+                         'United States. Currently, radiology is an expert-based field '
+                         'where automated tools are at best relegated to the role of '
+                         '“second reader.” Early detection is an enormously important '
+                         'part of breast cancer treatment, so our goal in this project '
+                         'is to create a machine learning pipeline for detection and '
+                         'diagnosis from mammogram images. We also model the '
+                         'growth and treatment of tumors using a system of ODEs. '
+                         'Due to a lack of human data, this last part of the pipeline '
+                         'uses data from experiments on lab mice, and is not restricted '
                          'to breast cancer',
                          className='ms-3'), 
         ], width=5)
@@ -131,17 +131,17 @@ def layout():
         dbc.Col([
             dcc.Markdown('Motivation'),
             html.Hr(),
-            dcc.Markdown(' Material deformation and stress-strain is an'
-                         'active area of mathematical modeling relevant to industrial'
-                         'and research-oriented materials science. It is important to'
-                         'take variations in material properties into account in these'
-                         'models. Multi-scale models that incorporate inhomogeneity'
-                         'were studied and modeling frameworks that address this'
-                         'need were created and tested. Incorporating variations in'
-                         'material properties at the micro scale resulted in significantly'
-                         'different predictions of material deformation under similar'
-                         'loading. Variations in material properties were accounted'
-                         'for through averaging over stresses in representative volume'
+            dcc.Markdown(' Material deformation and stress-strain is an '
+                         'active area of mathematical modeling relevant to industrial '
+                         'and research-oriented materials science. It is important to '
+                         'take variations in material properties into account in these '
+                         'models. Multi-scale models that incorporate inhomogeneity '
+                         'were studied and modeling frameworks that address this '
+                         'need were created and tested. Incorporating variations in '
+                         'material properties at the micro scale resulted in significantly '
+                         'different predictions of material deformation under similar '
+                         'loading. Variations in material properties were accounted '
+                         'for through averaging over stresses in representative volume '
                          'elements (RVEs).',
                          className='ms-3'), 
         ], width=5)

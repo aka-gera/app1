@@ -1,7 +1,7 @@
 import dash
 from dash import html, dcc, Input, Output, State, callback 
 import plotly.express as px 
-from .side_bar import sidebar
+from ..pages.side_bar import sidebar
 
 dash.register_page(__name__, title='Bolza Example Approximation', name='Bolza Example Approximation',order=5)
  
