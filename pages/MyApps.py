@@ -53,104 +53,105 @@ def layout():
                                     'margin': 'auto',   
                                     'color': 'grey'}
                             ),##################################### 
-                            dbc.Col([            
-                                html.A([
+                            # dbc.Col([            
+                            #     html.A([
 
-                                    html.Br(), 
-                                    html.Img(src=image_nav, 
-                                                alt='Image Alt Text', 
-                                                style={'width': '200px', 'height': '200px'}),
-                                    html.H3(['Navigation'],
-                                    style={ 
-                                        'text-align-last' : 'center' ,
-                                        'margin': 'auto',   
-                                        'color': 'grey'}
-                                    ),
-                                    ],
-                                href='app3'),
-                                ],
-                                  style={
-                                    'width' : 3,
-                                    'text-align-last' : 'center' ,
-                                    'margin': 'auto',   
-                                    'color': 'grey'}
-                            ),#####################################
-                            dbc.Col([            
-                                html.A([
+                            #         html.Br(), 
+                            #         html.Img(src=image_nav, 
+                            #                     alt='Image Alt Text', 
+                            #                     style={'width': '200px', 'height': '200px'}),
+                            #         html.H3(['Navigation'],
+                            #         style={ 
+                            #             'text-align-last' : 'center' ,
+                            #             'margin': 'auto',   
+                            #             'color': 'grey'}
+                            #         ),
+                            #         ],
+                            #     href='app3'),
+                            #     ],
+                            #       style={
+                            #         'width' : 3,
+                            #         'text-align-last' : 'center' ,
+                            #         'margin': 'auto',   
+                            #         'color': 'grey'}
+                            # ),#####################################
+                            # dbc.Col([            
+                            #     html.A([
 
-                                    html.Br(), 
-                                    html.Img(src=image_apps, 
-                                                alt='Image Alt Text', 
-                                                style={'width': '200px', 'height': '200px'}),
-                                    html.H3(['Bolza Example Approximation'],
-                                    style={ 
-                                        'text-align-last' : 'center' ,
-                                        'margin': 'auto',   
-                                        'color': 'grey'}
-                                    ),
-                                    ],
-                                href='app5'),
-                                ],
-                                  style={
-                                    'width' : 3,
-                                    'text-align-last' : 'center' ,
-                                    'margin': 'auto',   
-                                    'color': 'grey'}
-                            ),##################################### 
+                            #         html.Br(), 
+                            #         html.Img(src=image_apps, 
+                            #                     alt='Image Alt Text', 
+                            #                     style={'width': '200px', 'height': '200px'}),
+                            #         html.H3(['Bolza Example Approximation'],
+                            #         style={ 
+                            #             'text-align-last' : 'center' ,
+                            #             'margin': 'auto',   
+                            #             'color': 'grey'}
+                            #         ),
+                            #         ],
+                            #     href='app5'),
+                            #     ],
+                            #       style={
+                            #         'width' : 3,
+                            #         'text-align-last' : 'center' ,
+                            #         'margin': 'auto',   
+                            #         'color': 'grey'}
+                            # ),##################################### 
 
                         ]
                     ),
                     ########################## ROW 2 ##############
                 html.Hr(), 
-                    dbc.Row(
-                        [
+
+                    # dbc.Row(
+                    #     [
  
-                            dbc.Col([            
-                                html.A([ 
-                                    html.Br(),
-                                    html.Img(src=image_data, 
-                                                alt='Image Alt Text', 
-                                                style={'width': '200px', 'height': '200px'}),
-                                    html.H3(['Supervised Learning Classification'],
-                                  style={ 
-                                    'text-align-last' : 'center' ,
-                                    'margin': 'auto',   
-                                    'color': 'grey'}
-                                    ),
-                                ], 
-                                href='app2'),
-                                ],
-                                  style={
-                                    'width' : 3,
-                                    'text-align-last' : 'center' ,
-                                    'margin': 'auto',   
-                                    'color': 'grey'}
-                            ),#####################################  
-                            dbc.Col([            
-                                html.A([
+                    #         dbc.Col([            
+                    #             html.A([ 
+                    #                 html.Br(),
+                    #                 html.Img(src=image_data, 
+                    #                             alt='Image Alt Text', 
+                    #                             style={'width': '200px', 'height': '200px'}),
+                    #                 html.H3(['Supervised Learning Classification'],
+                    #               style={ 
+                    #                 'text-align-last' : 'center' ,
+                    #                 'margin': 'auto',   
+                    #                 'color': 'grey'}
+                    #                 ),
+                    #             ], 
+                    #             href='app2'),
+                    #             ],
+                    #               style={
+                    #                 'width' : 3,
+                    #                 'text-align-last' : 'center' ,
+                    #                 'margin': 'auto',   
+                    #                 'color': 'grey'}
+                    #         ),#####################################  
+                    #         dbc.Col([            
+                    #             html.A([
 
-                                    html.Br(), 
-                                    html.Img(src=image_data, 
-                                                alt='Image Alt Text', 
-                                                style={'width': '200px', 'height': '200px'}),
-                                    html.H3(['Neuro Net Classification'],
-                                    style={ 
-                                        'text-align-last' : 'center' ,
-                                        'margin': 'auto',   
-                                        'color': 'grey'}
-                                    ),
-                                    ],
-                                href='app6'),
-                                ],
-                                  style={
-                                    'width' : 3,
-                                    'text-align-last' : 'center' ,
-                                    'margin': 'auto',   
-                                    'color': 'grey'}
-                            ),
+                    #                 html.Br(), 
+                    #                 html.Img(src=image_data, 
+                    #                             alt='Image Alt Text', 
+                    #                             style={'width': '200px', 'height': '200px'}),
+                    #                 html.H3(['Deep Neural Network Classification'],
+                    #                 style={ 
+                    #                     'text-align-last' : 'center' ,
+                    #                     'margin': 'auto',   
+                    #                     'color': 'grey'}
+                    #                 ),
+                    #                 ],
+                    #             href='app6'),
+                    #             ],
+                    #               style={
+                    #                 'width' : 3,
+                    #                 'text-align-last' : 'center' ,
+                    #                 'margin': 'auto',   
+                    #                 'color': 'grey'}
+                    #         ),
 
-                        ]
-                    )
+                    #     ]
+                    # )
               
                 ], xs=8, sm=8, md=10, lg=10, xl=10, xxl=10)
         ]
